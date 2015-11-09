@@ -2,11 +2,6 @@ var baseUrl = 'https://api.spotify.com/v1/search?type=track&query='
 
 var myApp = angular.module('myApp', ['firebase'])
 
-var clientId = '120a342e97ff03c075b023419d766a01';
-SC.initialize({
-  client_id: clientId
-});
-
 
 var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $firebaseArray, $firebaseObject) {
   var ref = new Firebase("https://demo343.firebaseio.com/");
