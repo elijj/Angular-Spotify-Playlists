@@ -98,10 +98,10 @@ var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $
     }
   }
 });
-//angular.element(document).ready(function() {
-  //    angular.bootstrap(document, ['myApp']);
-//});
+angular.element(document).ready(function() {
+      angular.bootstrap(document, ['myApp']);
+});
 // Add tool tips to anything with a title property
-//$('body').tooltip({
-  //  selector: '[title]'
-//});
+$('body').tooltip({
+    selector: '[title]'
+});
