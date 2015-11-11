@@ -4,16 +4,13 @@ var myApp = angular.module('myApp', ['firebase'])
 
 
 var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $firebaseArray, $firebaseObject) {
-  var ref = new Firebase("https://demo343.firebaseio.com/");
+  var ref = new Firebase("https://spotify343.firebaseio.com/");
     var userRef  = ref.child('user');
-    var playlistRef = ref.child('playlist')
+    var playlists  = ref.child('publicPlaylist');
     $scope.audioObject = {}
-    //$scope.songs = $firebaseArray(songsRef);//tweets
     $scope.users = $firebaseObject(userRef);//users
-    $scope.playlist = $firebaseArray(playlistRef); 
-    // Create authorization object that referes to firebase
-    // Create authorization object that referes to firebase
-  $scope.authObj = $firebaseAuth(ref);
+    $scope.playlist = $firebaseArray(playlists)//public playlist
+    $scope.authObj = $firebaseAuth(ref);
 
   // Test if already logged in
   var authData = $scope.authObj.$getAuth();
@@ -36,8 +33,7 @@ var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $
     .then(function(authData) {
       $scope.userId = authData.uid;
       $scope.users[authData.uid] ={
-        handle:$scope.handle, 
-        userImage:$scope.userImage,
+        handle:$scope.handle
       }
       $scope.users.$save()
     })
@@ -57,7 +53,6 @@ var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $
 
   // LogIn function
   $scope.logIn = function() {
-    console.log('log in')
     return $scope.authObj.$authWithPassword({
       email: $scope.email,
       password: $scope.password
@@ -69,13 +64,20 @@ var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $
     $scope.authObj.$unauth()
     $scope.userId = false
   }
+  //end of auth
 
-//end of auth
-
+  //post: adds tack to playlist
   $scope.like =function(track){
         alert('Your track has been added');
-        $scope.playlist.add({track});
+        $scope.playlist.$add({track});
   }  
+
+   //post: adds tack to playlist
+  $scope.remove =function(track){
+        $scope.playlist.$remove(track);
+  } 
+
+  //post: gets tracks
   $scope.getSongs = function() {
     $http.get(baseUrl + $scope.track).success(function(response){
       data = $scope.tracks = response.tracks.items
@@ -96,10 +98,10 @@ var myCtrl = myApp.controller('myCtrl', function($scope, $http, $firebaseAuth, $
     }
   }
 });
-angular.element(document).ready(function() {
-      angular.bootstrap(document, ['myApp']);
-});
+//angular.element(document).ready(function() {
+  //    angular.bootstrap(document, ['myApp']);
+//});
 // Add tool tips to anything with a title property
-$('body').tooltip({
-    selector: '[title]'
-});
+//$('body').tooltip({
+  //  selector: '[title]'
+//});
